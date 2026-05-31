@@ -6,7 +6,6 @@ import lombok.Setter;
 @Setter
 
 public class IndicatorsModal {
-    private boolean success;
     private boolean isActive;
     private boolean isBlocked;
     private boolean isVerified;

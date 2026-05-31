@@ -14,7 +14,7 @@ public class RegistrationModal {
     @JsonProperty("company_info")
     private CompanyModal company;
 
-    @JsonProperty("user_info")
+    @JsonProperty("user_profile")
     private UserDetailsModal user;
 
 }

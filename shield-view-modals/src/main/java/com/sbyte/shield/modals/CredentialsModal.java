@@ -9,7 +9,11 @@ import lombok.Setter;
 @Setter
 
 public class CredentialsModal {
-    //mandatory field
+    //mandatory field depends on mode
+    @JsonProperty("user_name")
+    private String userName;
+
+    //mandatory field depends on mode
     @JsonProperty("contact_email")
     private String email;
 
@@ -17,12 +21,18 @@ public class CredentialsModal {
     @JsonProperty("password")
     private String password;
 
+    //not mandatory field (optional and it is generated only on initial save)
+    @JsonProperty("credential_id")
+    private String credentialId;
 
-    //mandatory field if admin_name is not there for service account
-    @JsonProperty("admin_name")
-    private String adminName;
-
-    //mandatory field
+    //nonmandatory field
     @JsonProperty("service_name")
     private String serviceName;
+
+    @JsonProperty("captcha_token")
+    private String captchaToken;
+
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
 }

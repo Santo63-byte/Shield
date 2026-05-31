@@ -7,12 +7,10 @@ import lombok.Setter;
 @Setter
 public class CompanyModal {
 
-    @JsonProperty("name")
+    @JsonProperty("company_name")
     private String companyName;
 
-    @JsonProperty("code")
+    @JsonProperty("company_code")
     private String companyCode;
 
-    @JsonProperty("description")
-    private String description;
 }

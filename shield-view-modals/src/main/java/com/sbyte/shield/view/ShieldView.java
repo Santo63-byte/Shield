@@ -1,15 +1,26 @@
-
+// Base interface of public api
 package com.sbyte.shield.view;
 
-import com.sbyte.shield.modals.AuthenticatorModal;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.sbyte.shield.modals.AuthVerifierModal;
+import com.sbyte.shield.modals.LoginModal;
+import com.sbyte.shield.modals.RegisterUpdateModal;
 import com.sbyte.shield.modals.RegistrationModal;
-import com.sbyte.shield.modals.ShieldResponse;
+import com.sbyte.shield.modals.RegistrationResponseModal;
+import com.sbyte.shield.modals.ShieldAuthResponse;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface ShieldView {
 
-    ShieldResponse login(AuthenticatorModal loginModal);
+    ShieldAuthResponse login(LoginModal loginModal, HttpServletResponse httpServletResponse);
 
-    ShieldResponse logout(AuthenticatorModal logoutModal);
+    ShieldAuthResponse logout(HttpServletResponse httpServletResponse, @RequestBody(required = false) Boolean forceLogout);
 
-    ShieldResponse register(RegistrationModal registerModal);
+    RegistrationResponseModal register(RegistrationModal registerModal);
+
+    RegistrationResponseModal updateRegistration(String userId, RegisterUpdateModal registerUpdateModal);
+
+    AuthVerifierModal isAuthenticated(HttpServletResponse httpServletResponse);
 }

@@ -12,25 +12,17 @@ public class UserDetailsModal {
     @JsonProperty("user_id")
     private String userId;
 
-    // mandatory
+    // not mandatory
     @JsonProperty("user_name")
     private String userName;
 
     // mandatory
-    @JsonProperty("contact_email")
-    private String email;
-
-    // not mandatory
     @JsonProperty("role")
     private String role;
 
-    // not mandatory
-    @JsonProperty("created_at")
+    // not mandatory (better for audit prpse)
+    @JsonProperty("requested_timestamp")
     private OffsetDateTime createdAt;
-
-    // not mandatory
-    @JsonProperty("updated_at")
-    private OffsetDateTime updatedAt;
 
     // mandatory
     @JsonProperty("credentials")

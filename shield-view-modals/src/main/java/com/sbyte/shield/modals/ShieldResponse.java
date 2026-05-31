@@ -11,9 +11,6 @@ public class ShieldResponse {
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty ("indicators")
-    private IndicatorsModal indicators;
-
     @JsonProperty("shieldmessages")
     private ShieldMessages message;
 

@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ShieldMessages {
+public class  ShieldMessages {
 
     @JsonProperty("status")
-    private String status;
+    private int status;
 
     @JsonProperty("message")
     private String message;
