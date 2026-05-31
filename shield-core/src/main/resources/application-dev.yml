@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    url: ${SHIELD_DB_URL:jdbc:postgresql://localhost:5432/shield_dev}
+    username: ${SHIELD_DB_USERNAME:postgres}
+    password: ${SHIELD_DB_PASSWORD:manager123}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  # Redis Configuration
+  redis:
+    host: ${SHIELD_REDIS_HOST:localhost}
+    port: ${SHIELD_REDIS_PORT:6379}
+    password: ${SHIELD_REDIS_PASSWORD:}
+    database: ${SHIELD_REDIS_DATABASE:0}
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1
+
+shield:
+  jwt:
+    secret: ${SHIELD_SECRET}
+    access-token-ttl-seconds: 600      # 10 minutes
+    refresh-token-ttl-seconds: 86400
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: INFO
+    org.hibernate.type.descriptor.sql: TRACE
+
+mybatis:
+  mapper-locations: classpath:mybatis/mappers/*.xml
