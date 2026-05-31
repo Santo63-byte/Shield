@@ -1,0 +1,12 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /shield
+
+spring:
+  profiles:
+    active: dev
+
+logging:
+  file:
+    name: logs/app.log
