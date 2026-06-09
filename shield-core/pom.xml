@@ -114,18 +114,6 @@
         <!-- Shield Modules -->
         <dependency>
             <groupId>com.sbyte.shield</groupId>
-            <artifactId>shield-config</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sbyte.shield</groupId>
-            <artifactId>shield-fmw</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.sbyte.shield</groupId>
             <artifactId>shield-view-modals</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>

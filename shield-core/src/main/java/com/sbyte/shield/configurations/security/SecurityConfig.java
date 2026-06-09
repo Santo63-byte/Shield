@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Safe to disable for JWT APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/shield/login", "/api/shield/logout/**", "/api/shield/register", "/api/shield/isAuthenticated").permitAll()
+                        .requestMatchers("/login", "/logout/**", "/register", "/isAuthenticated").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
