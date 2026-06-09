@@ -1,15 +1,16 @@
 package com.sbyte.shield.configurations.security;
 
-import com.sbyte.shield.core.services.authenticator.support.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -19,7 +20,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Safe to disable for JWT APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/logout", "/register", "/isAuthenticated").permitAll()
+                        .requestMatchers("/api/shield/login", "/api/shield/logout/**", "/api/shield/register", "/api/shield/isAuthenticated").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
