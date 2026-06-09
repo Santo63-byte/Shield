@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -35,5 +36,8 @@ public class RFToken { ///  Active Refresh Token Entity
 
     @Column(name = "dvcid")
     private String deviceId;
+
+    @Column(name = "tmestmp", nullable = false)
+    private LocalDateTime timestamp;
 
 }

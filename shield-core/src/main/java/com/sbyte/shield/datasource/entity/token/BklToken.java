@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "SHDBKLTKN", schema = "shield_auth")
 
 @Getter
 @Setter
-public class BklToken { /// Blacklist Token Entity
+public class BklToken { /// Blacklisted Token Entity
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,5 +36,8 @@ public class BklToken { /// Blacklist Token Entity
 
     @Column(name = "dvcid")
     private String deviceId;
+
+    @Column(name = "tmestmp", nullable = false)
+    private LocalDateTime timestamp;
 
 }
