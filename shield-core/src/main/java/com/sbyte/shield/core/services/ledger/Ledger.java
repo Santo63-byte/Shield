@@ -1,17 +1,21 @@
 package com.sbyte.shield.core.services.ledger;
 
-import com.sbyte.shield.dto.RegistrationDTO;
-import com.sbyte.shield.dto.ShieldErrorsDTO;
-import com.sbyte.shield.core.exceptions.ShieldExceptions;
-import com.sbyte.shield.core.services.auditor.Auditor;
-import com.sbyte.shield.core.services.ledger.validator.LedgerValidator;
-import com.sbyte.shield.dto.LedgerDTO;
-import com.sbyte.shield.dto.LedgerResponseDTO;
-import com.sbyte.shield.datasource.storage.LedgerStorage;
-import com.sbyte.shield.utils.SnowFlakesIDGenerator;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import static com.sbyte.shield.constants.TransactionConstants.ACCOUNT_CREATION;
+import static com.sbyte.shield.constants.TransactionConstants.ACCOUNT_DELETION;
+import static com.sbyte.shield.constants.TransactionConstants.ACCOUNT_UPDATE;
+import com.sbyte.shield.core.exceptions.ShieldExceptions;
+import com.sbyte.shield.core.services.auditor.Auditor;
+import com.sbyte.shield.datasource.storage.LedgerStorage;
+import com.sbyte.shield.dto.LedgerDTO;
+import com.sbyte.shield.dto.LedgerResponseDTO;
+import com.sbyte.shield.dto.RegistrationDTO;
+import com.sbyte.shield.dto.ShieldErrorsDTO;
+import com.sbyte.shield.utils.SnowFlakesIDGenerator;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This component handles ledger activities like saving , updating, deleting, auditing info of user transactions
@@ -25,8 +29,6 @@ import org.springframework.stereotype.Component;
 @Component("ledger")
 public class Ledger  {
 
-    @Autowired
-    private final LedgerValidator ledgerValidator;
 
     @Autowired
     private LedgerStorage ledgerStorage;
@@ -37,16 +39,11 @@ public class Ledger  {
     @Autowired
     private SnowFlakesIDGenerator idGenerator;
 
-    public Ledger(LedgerValidator ledgerValidator, LedgerStorage ledgerStorage, Auditor auditor, SnowFlakesIDGenerator idGenerator) {
-        this.ledgerValidator = ledgerValidator;
-        this.ledgerStorage = ledgerStorage;
-        this.auditor = auditor;
-        this.idGenerator = idGenerator;
-    }
 
     public LedgerResponseDTO save(LedgerDTO ledgerDTO) {
         LedgerResponseDTO response = new LedgerResponseDTO();
         ledgerDTO.setLedgerId(idGenerator.nextId());
+        ledgerDTO.setAction(ACCOUNT_CREATION);
         ledgerDTO.getRegistrationDTO().setStatus("ACTIVE");
         try {
             ledgerStorage.persist(ledgerDTO);
@@ -90,6 +87,7 @@ public class Ledger  {
         if(!credentialChange) {// preparing ledger with updated info
             prepareLedgerForUpdate(ledger, updatedInfo);
         }
+        ledger.setAction(ACCOUNT_UPDATE);
         try {
             ledgerStorage.persist(ledger);
         }
@@ -107,6 +105,7 @@ public class Ledger  {
     }
     public LedgerResponseDTO delete(LedgerDTO ledgerDTO) {
         LedgerResponseDTO response = new LedgerResponseDTO();
+        ledgerDTO.setAction(ACCOUNT_DELETION);
         ledgerStorage.evict(ledgerDTO);
         return response;
     }

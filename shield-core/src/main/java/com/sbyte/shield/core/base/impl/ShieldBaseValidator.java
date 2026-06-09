@@ -1,15 +1,18 @@
 package com.sbyte.shield.core.base.impl;
 
-import com.sbyte.shield.configurations.policy.ShieldPolicy;
-import com.sbyte.shield.core.base.abst.BaseValidator;
-import com.sbyte.shield.core.base.abst.Error;
-import com.sbyte.shield.dto.ShieldErrorsDTO;
-import com.sbyte.shield.core.exceptions.ShieldExceptions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.sbyte.shield.configurations.policy.ShieldPolicy;
+import com.sbyte.shield.core.base.abst.BaseValidator;
+import com.sbyte.shield.core.base.abst.Error;
+import com.sbyte.shield.core.exceptions.ShieldExceptions;
+import com.sbyte.shield.dto.ShieldErrorsDTO;
 
 /**
  * Base validator class providing common validation methods.
@@ -75,6 +78,7 @@ public abstract class ShieldBaseValidator<O1,O2 extends Error> implements BaseVa
 
     public void throwError(O2 o2) {}/// provision to override in child for custom error handling
 
+    @Override
     public void validationException(O2 o2) {
         /// For errors object having getStatus method, check status and throw exception if not success code
 
@@ -83,17 +87,17 @@ public abstract class ShieldBaseValidator<O1,O2 extends Error> implements BaseVa
             Object status = getStatusMethod.invoke(o2);
 
             if (!Objects.equals(status, VALIDATION_SUCCESS_CODE)) {
-                if (o2 instanceof ShieldErrorsDTO) {
-                    throw new ShieldExceptions((ShieldErrorsDTO) o2);
-                }
-                else{
-                    throwError(o2);
+                if (o2 instanceof ShieldErrorsDTO shieldErrorsDTO) {
+                    throw new ShieldExceptions(shieldErrorsDTO);
+                } else {
+                    // use generic throwError with a cast to O2
+                    throwError((O2) o2);
                 }
             }
         }
         catch (NoSuchMethodException e) {
             throw new ShieldExceptions("The errors object does not have a getStatus method", String.valueOf(e));
-        } catch (Exception e) {
+        } catch (ShieldExceptions | IllegalAccessException | SecurityException | InvocationTargetException e) {
             throw new ShieldExceptions("Exception", String.valueOf(e),400);
         }
     }

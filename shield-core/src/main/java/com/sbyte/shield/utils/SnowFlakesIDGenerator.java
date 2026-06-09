@@ -1,5 +1,8 @@
 package com.sbyte.shield.utils;
 
+import org.springframework.stereotype.Component;
+
+@Component("snowFlakesIDGenerator")
 public class SnowFlakesIDGenerator {
     // Epoch custom start time
     private static final long EPOCH = 1609459200000L;
@@ -16,16 +19,9 @@ public class SnowFlakesIDGenerator {
     private static final long WORKER_ID_SHIFT = SEQUENCE_BITS;
     private static final long TIMESTAMP_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS;
 
-    private final long workerId;
+    private long workerId;
     private long sequence = 0L;
     private long lastTimestamp = -1L;
-
-    public SnowFlakesIDGenerator (long workerId) {
-        if (workerId < 0 || workerId > MAX_WORKER_ID) {
-            throw new IllegalArgumentException("Worker ID must be between 0 and " + MAX_WORKER_ID);
-        }
-        this.workerId = workerId;
-    }
 
 
     public long nextId() {

@@ -24,4 +24,5 @@ public class BklTokenDTO implements Serializable {
     private String sessionId;
 
     private String deviceId;
+
 }

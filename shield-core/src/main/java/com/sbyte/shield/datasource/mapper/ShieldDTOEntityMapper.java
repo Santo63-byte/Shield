@@ -50,11 +50,11 @@ public interface ShieldDTOEntityMapper {
     @Mapping(target = "userInfo.userAddress", source = "registrationDTO.userAddress")
     @Mapping(target = "userInfo.userDOB", source = "registrationDTO.userDOB")
     @Mapping(target = "userInfo.userIdRef", source = "registrationDTO.userId")
-    @Mapping(target = "userTransactionAudit.userAction", source = "registrationDTO.action")
-    @Mapping(target = "userTransactionAudit.userIp", source = "registrationDTO.userIp")
-    @Mapping(target = "userTransactionAudit.userDevice", source = "registrationDTO.userDevice")
-    @Mapping(target = "userTransactionAudit.userAgent", source = "registrationDTO.userAgent")
-    @Mapping(target = "userTransactionAudit.userActionTime", source = "registrationDTO.userActionTime")
+    // @Mapping(target = "userTransactionAudit.userAction", source = "registrationDTO.action")
+    // @Mapping(target = "userTransactionAudit.userIp", source = "registrationDTO.userIp")
+    // @Mapping(target = "userTransactionAudit.userDevice", source = "registrationDTO.userDevice")
+    // @Mapping(target = "userTransactionAudit.userAgent", source = "registrationDTO.userAgent")
+    // @Mapping(target = "userTransactionAudit.userActionTime", source = "registrationDTO.userActionTime")
     LedgerMaster mapLedgerDTOToEntity(LedgerDTO ledgerDTO);
 
     @AfterMapping
@@ -62,11 +62,12 @@ public interface ShieldDTOEntityMapper {
         if (ledgerMaster.getUserInfo() != null) {
             ledgerMaster.getUserInfo().setLedgerMaster(ledgerMaster);
         }
-        if(ledgerMaster.getUserTransactionAudit() != null){
-            ledgerMaster.getUserTransactionAudit().setLedgerMaster(ledgerMaster);
-        }
+        // if(ledgerMaster.getUserTransactionAudit() != null){
+        //     ledgerMaster.getUserTransactionAudit().setLedgerMaster(ledgerMaster);
+        // }
     }
     RFToken mapRFTokenDTOToEntity(RFTokenDTO rfTokenValue);
 
+    @Mapping(target = "accessToken", source = "token")
     BklTokenDTO mapBklTokenEntitiesToDTOs(BklToken bklToken);
 }

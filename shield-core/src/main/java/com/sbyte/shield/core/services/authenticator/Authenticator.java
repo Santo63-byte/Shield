@@ -1,20 +1,21 @@
 package com.sbyte.shield.core.services.authenticator;
 
 
-import com.sbyte.shield.core.base.impl.CoreServiceBase;
-import com.sbyte.shield.core.base.impl.CredentialSupport;
-import com.sbyte.shield.core.services.authenticator.support.AuthSupport;
-import com.sbyte.shield.core.services.authenticator.support.JwtTokenProvider;
-import com.sbyte.shield.core.services.authenticator.validators.AuthorizationValidator;
-import com.sbyte.shield.dto.*;
-import com.sbyte.shield.modals.AuthVerifierModal;
-import com.sbyte.shield.modals.ShieldAuthResponse;
-import com.sbyte.shield.datasource.storage.TokenStorage;
-import com.sbyte.shield.core.exceptions.ShieldExceptions;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import com.sbyte.shield.core.base.impl.CredentialSupport;
+import com.sbyte.shield.core.exceptions.ShieldExceptions;
+import com.sbyte.shield.core.services.authenticator.support.AuthSupport;
+import com.sbyte.shield.core.services.authenticator.support.JwtTokenProvider;
+import com.sbyte.shield.core.services.authenticator.validators.AuthorizationValidator;
+import com.sbyte.shield.datasource.storage.TokenStorage;
+import com.sbyte.shield.dto.CredentialsDTO;
+import com.sbyte.shield.modals.AuthVerifierModal;
+import com.sbyte.shield.modals.ShieldAuthResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 ///JWT based authenticator implementation
 @Slf4j
@@ -44,11 +45,11 @@ public class Authenticator  {
 
 
     public ShieldAuthResponse authorize(CredentialsDTO input) throws ShieldExceptions {
-        log.info("Authorizing user: {}", input.getUserName());
+        log.info("Authorizing user session: {}", input.getSsnid());
         return loginService.fire(input);
     }
     public ShieldAuthResponse revoke(CredentialsDTO input) throws ShieldExceptions {
-            log.info("Revoking token for user: {}", input.getUserName());
+            log.info("Revoking token for user session: {}", input.getSsnid());
             return tokenRevocationService.fire(input);
     }
 
@@ -65,7 +66,7 @@ public class Authenticator  {
         return authVerifierModal;
     }
     public void invalidateAndBlacklistToken(){
-        log.warn("Invalidating and blacklisting token for user: {}", authSupport.getAuthenticationStatus().getName());
+        log.warn("Invalidating and blacklisting token for current session");
         tokenRevocationService.invalidateAndBlacklistToken();
     }
 }

@@ -1,11 +1,14 @@
 package com.sbyte.shield.core.services.authenticator.validators;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.sbyte.shield.core.base.impl.ShieldBaseValidator;
 import com.sbyte.shield.core.services.authenticator.support.AuthSupport;
 import com.sbyte.shield.dto.CredentialsDTO;
 import com.sbyte.shield.dto.ShieldErrorsDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 
+@Component("currentSessionValidator")
 public class CurrentSessionValidator extends ShieldBaseValidator<CredentialsDTO, ShieldErrorsDTO> {
 
     @Autowired

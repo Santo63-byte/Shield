@@ -1,29 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sbyte.shield.datasource.mybatis.UserRepository">
-    <select id="findAllActiveUsers" resultType="com.sbyte.shield.datasource.entity.ledger.UserCredInfo">
+    <select id="findAllActiveUsers">
         SELECT
-        mst.usrnme as userName,
-        userinfo.usreml as userEmail
+            mst.usrnme as userName,
+            userinfo.usreml as userEmail
         FROM shield_auth.shdldgmst mst
-        JOIN shield_auth.shdusrrgst userinfo ON  mst.ldguid = userinfo.ldguid
+        JOIN shield_auth.shdusrrgst userinfo ON mst.ldguid = userinfo.ldguid
         WHERE mst.usraccsts = 'ACTIVE'
     </select>
-    <select id="getUserExistingCredContext" resultType="com.sbyte.shield.dto.BasicUserCredentialDTO">
+    <select id="getUserExistingCredContext">
         SELECT
-        mst.usrnme as userName,
-        userinfo.usreml as email,
-        mst.usrpsd as password
+            mst.usrnme as userName,
+            userinfo.usreml as email,
+            mst.usrpsd as password
         FROM shield_auth.shdldgmst mst
-        JOIN shield_auth.shdusrrgst userinfo ON  mst.ldguid = userinfo.ldguid
+        JOIN shield_auth.shdusrrgst userinfo ON mst.ldguid = userinfo.ldguid
         WHERE mst.usraccsts = 'ACTIVE'
-        <if test="userName != null">
-        AND mst.usrnme = #{userName}
+        <if test="filter.userName != null">
+            AND mst.usrnme = #{filter.userName}
         </if>
-        <if test="userEmail != null">
-            AND userinfo.usreml = #{userEmail}
+        <if test="filter.userEmail != null">
+            AND userinfo.usreml = #{filter.userEmail}
         </if>
     </select>
 </mapper>
