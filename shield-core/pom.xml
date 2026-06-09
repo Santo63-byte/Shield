@@ -110,6 +110,8 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
+
+        <!-- Shield Modules -->
         <dependency>
             <groupId>com.sbyte.shield</groupId>
             <artifactId>shield-view-modals</artifactId>
