@@ -1,9 +1,14 @@
 package com.sbyte.shield.datasource.entity.ledger;
-import jakarta.persistence.*;
+import java.time.OffsetDateTime;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -33,6 +38,6 @@ public class LedgerMaster {
     @OneToOne(mappedBy = "ledgerMaster", cascade = CascadeType.ALL)
     private UserInfo userInfo;
 
-    @OneToOne(mappedBy = "ledgerMaster", cascade = CascadeType.ALL)
-    private  UserTransactionAudit userTransactionAudit;
+    // @OneToMany(mappedBy = "ledgerMaster", cascade = CascadeType.ALL)
+    // private  UserTransactionAudit userTransactionAudit;
 }

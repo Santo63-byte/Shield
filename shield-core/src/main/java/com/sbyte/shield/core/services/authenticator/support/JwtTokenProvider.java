@@ -1,26 +1,28 @@
 package com.sbyte.shield.core.services.authenticator.support;
 
-import com.sbyte.shield.core.exceptions.ShieldExceptions;
-import com.sbyte.shield.datasource.storage.TokenStorage;
-import com.sbyte.shield.dto.BklTokenDTO;
-import com.sbyte.shield.dto.CredentialsDTO;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
+import com.sbyte.shield.core.exceptions.ShieldExceptions;
+import com.sbyte.shield.datasource.storage.TokenStorage;
+import com.sbyte.shield.dto.BklTokenDTO;
+import com.sbyte.shield.dto.CredentialsDTO;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component("jwtTokenProvider")
@@ -112,7 +114,7 @@ public class JwtTokenProvider {
         SecurityContextHolder.clearContext();
     }
 
-    public boolean isValidToken(String token) {
+    public boolean isValidToken(String token) throws ShieldExceptions {
         if(token == null || token.trim().isEmpty()){
             log.warn("JWT token is null or empty");
             return false;
@@ -122,8 +124,8 @@ public class JwtTokenProvider {
         if(blackListedTokens != null && !blackListedTokens.isEmpty()) {
             for(BklTokenDTO bklToken : blackListedTokens) {
                 if(bklToken.getAccessToken().equals(token)) {
-                    log.warn("JWT token is blacklisted");
-                    return false;
+                    log.warn("Blacklisted token attempt...");
+                    throw new ShieldExceptions("BLACKLISTED_TOKEN", "Token is not valid", 401);
                 }
             }
         }
@@ -135,19 +137,19 @@ public class JwtTokenProvider {
             return true;
         } catch (io.jsonwebtoken.ExpiredJwtException ex) {
             log.warn("JWT token is expired: {}", ex.getMessage());
-            return false;
+            throw new ShieldExceptions("TOKEN_EXPIRED", "Token has expired", 401);
         } catch (io.jsonwebtoken.MalformedJwtException ex) {
             log.warn("JWT token is malformed: {}", ex.getMessage());
-            return false;
+            throw new ShieldExceptions("MALFORMED_TOKEN", "Token is malformed", 400);
         } catch (io.jsonwebtoken.SignatureException ex) {
             log.warn("JWT signature validation failed: {}", ex.getMessage());
-            return false;
+            throw new ShieldExceptions("INVALID_SIGNATURE", "Token signature is invalid", 400);
         } catch (io.jsonwebtoken.UnsupportedJwtException ex) {
             log.warn("JWT token is unsupported: {}", ex.getMessage());
-            return false;
+            throw new ShieldExceptions("UNSUPPORTED_TOKEN", "Token is not supported", 400);
         } catch (IllegalArgumentException ex) {
             log.warn("JWT claims string is empty: {}", ex.getMessage());
-            return false;
+            throw new ShieldExceptions("INVALID_TOKEN", "Token is invalid", 400);
         }
     }
 
@@ -175,7 +177,7 @@ public class JwtTokenProvider {
                     .getSubject();
         } catch (io.jsonwebtoken.JwtException | IllegalArgumentException ex) {
             log.error("Failed to extract username from JWT token: {}", ex.getMessage());
-            throw new IllegalArgumentException("Invalid JWT token", ex);
+            throw new ShieldExceptions("INVALID_TOKEN", "Token is invalid", 400);
         }
     }
 

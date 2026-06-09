@@ -1,5 +1,8 @@
 package com.sbyte.shield.core.services.authenticator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.sbyte.shield.core.base.impl.CoreServiceBase;
 import com.sbyte.shield.core.exceptions.ShieldExceptions;
 import com.sbyte.shield.core.services.authenticator.support.AuthSupport;
@@ -10,10 +13,11 @@ import com.sbyte.shield.dto.CredentialsDTO;
 import com.sbyte.shield.dto.ShieldErrorsDTO;
 import com.sbyte.shield.dto.UserSessionDTO;
 import com.sbyte.shield.modals.ShieldAuthResponse;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 
+@Component("tokenRevocationService")
 public class TokenRevocationService extends CoreServiceBase<CredentialsDTO, ShieldAuthResponse> {
 
     @Autowired

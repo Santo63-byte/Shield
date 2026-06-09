@@ -1,5 +1,13 @@
 package com.sbyte.shield.core.services.authenticator;
 
+import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Component;
+
 import com.sbyte.shield.core.base.impl.CoreServiceBase;
 import com.sbyte.shield.core.base.impl.CredentialSupport;
 import com.sbyte.shield.core.exceptions.ShieldExceptions;
@@ -7,20 +15,18 @@ import com.sbyte.shield.core.services.authenticator.support.JwtTokenProvider;
 import com.sbyte.shield.core.services.authenticator.validators.AuthorizationValidator;
 import com.sbyte.shield.datasource.mybatis.UserRepository;
 import com.sbyte.shield.datasource.storage.TokenStorage;
-import com.sbyte.shield.dto.*;
+import com.sbyte.shield.dto.BasicUserCredentialDTO;
+import com.sbyte.shield.dto.CredentialsDTO;
+import com.sbyte.shield.dto.RFTokenDTO;
+import com.sbyte.shield.dto.ShieldErrorsDTO;
+import com.sbyte.shield.dto.UserFilterDTO;
 import com.sbyte.shield.modals.IndicatorsModal;
 import com.sbyte.shield.modals.ShieldAuthResponse;
 import com.sbyte.shield.modals.UserSession;
 import com.sbyte.shield.utils.ShieldUtils;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Component;
-
-import java.util.Collections;
 
 @Component("loginService")
 public class LoginService extends CoreServiceBase<CredentialsDTO, ShieldAuthResponse> {
